@@ -11,8 +11,8 @@ const fizBuz = () => {
 
 let circle = (r) => {
   let out = "";
-  const circumference = r * Math.PI * 2;
-  const area = Math.pow(r, 2) * Math.PI;
+  const circumference = (r * Math.PI * 2).toPrecision(2);
+  const area = (Math.pow(r, 2) * Math.PI).toPrecision(2);
   out =
     "Circumference of circle is equal = " +
     circumference +
