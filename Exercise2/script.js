@@ -59,7 +59,7 @@ const foo34 = (arr) => {
 
   console.log(counts);
 };
-
+//Ad 3.5
 const foo35 = (arr) => {
   let tempArr = arr.splice(0, 10);
   tempArr.forEach((element) => {
@@ -67,9 +67,53 @@ const foo35 = (arr) => {
   });
   return arr;
 };
+//Ad 4
+const changeName = (nameArray) => {
+  nameArray.forEach((element, index) => {
+    nameArray[index] = nameArray[index].replace(/a/i, "4");
+    nameArray[index] = nameArray[index].replace(/e/i, "3");
+    if (nameArray[index].length > 6) {
+      nameArray[index] =
+        nameArray[index].substring(0, 3) +
+        "..." +
+        nameArray[index].substring(
+          nameArray[index].length - 3,
+          nameArray[index].length
+        );
+    }
+  });
+};
+//Ad5
+const getPriceList = (foodString) => {
+  let separate = foodString.split(", ");
+  let priceList = [];
+  separate.forEach((word, index) => {
+    let object = {};
+    object[word] = (Math.random() * (10 - 1) + 1).toFixed(2);
+    object["quantity"] = Math.round(Math.random() * (5 - 1) + 1);
+    priceList.push(object);
+  });
+  return priceList;
+};
 
+const getShopList = (priceList) => {
+  let shopList = [];
+  for (let index = 0; index < priceList.length / 2; index++) {
+    let item = priceList[Math.floor(Math.random() * priceList.length)];
+    shopList.push(item);
+  }
+  return shopList;
+};
 
-
+const getSumPrice = (shopList) => {
+  let sum = 0;
+  shopList.forEach((element) => {
+    sum +=
+      parseFloat(Object.values(element)[0]) *
+      parseInt(Object.values(element)[1]);
+  });
+  return sum;
+};
 //Ad1
 console.log(fizBuz());
 //Ad2
@@ -89,11 +133,19 @@ foo34(arr);
 //Ad3.5
 arr = foo35(arr);
 console.log(arr);
-
 //Ad4
+let nameArray = ["Andrzej", "Mateusz", "Jarek", "Mariusz", "Kazimierz"];
+changeName(nameArray);
+console.log(nameArray);
+//Ad5
+console.log("Cennik");
+let foodString = "jajka, mleko, masło, chleb";
 
-let nameArray = ["Andrzej", "Mateusz", "Jarek", "Mariusz", "Aleksander"];
+let priceList = getPriceList(foodString);
+console.log(priceList);
 
-
-
-nameArray.forEach
+const shopList = getShopList(priceList);
+console.log("Lista zakupów:");
+console.log(shopList);
+console.log("Cena zakupów:");
+console.log(getSumPrice(shopList));
