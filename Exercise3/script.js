@@ -22,6 +22,7 @@ w niej liczb parzystych i ile wynosi iloczyn wszystkich jej elementów.
 */
 
 //Ad 1
+
 const sum = (a, b) => {
   return a + b;
 };
@@ -45,25 +46,12 @@ function sumAll() {
 
 const connectArrays = (foo, arrays) => {
   let outArr = [];
-  let howManyArr = arrays.length;
-  if (howManyArr == 2) {
-    for (let indexY = 0; indexY < arrays.length - 1; indexY++) {
-      for (let indexX = 0; indexX < arrays[0].length; indexX++) {
-        outArr.push(foo(arrays[indexY][indexX], arrays[indexY + 1][indexX]));
-      }
+  for (let indexX = 0; indexX < arrays[0].length; indexX++) {
+    let tempArr = [];
+    for (let indexY = 0; indexY < arrays.length; indexY++) {
+      tempArr.push(arrays[indexY][indexX]);
     }
-  } else if (howManyArr == 3) {
-    for (let indexX = 0; indexX < arrays[0].length; indexX++) {
-      outArr.push(foo(arrays[0][indexX], arrays[1][indexX], arrays[2][indexX]));
-    }
-  } else {
-    for (let indexX = 0; indexX < arrays[0].length; indexX++) {
-      let tempArr = [];
-      for (let indexY = 0; indexY < arrays.length; indexY++) {
-        tempArr.push(arrays[indexY][indexX]);
-      }
-      outArr.push(foo(...tempArr));
-    }
+    outArr.push(foo(...tempArr));
   }
   return outArr;
 };
@@ -96,6 +84,7 @@ const dictionary = (text) => {
 };
 
 //Ad4
+
 const normalize = (val, min, max) => {
   return ((val - min) / (max - min)).toFixed(2);
 };
@@ -109,29 +98,33 @@ const scale = (arr) => {
 };
 
 //Ad5
+
 const productPlural = (length) => {
   let arr = Array.apply(null, Array(length)).map(function () {});
   arr = arr.map((el) => (el = Math.round(Math.random() * (10 - 1) + 1)));
   console.log(arr);
   console.log(
-    arr.reduce((sum, next) => {
-      if (next % 2 == 0) {
-        return sum + 1;
-      }
-      return sum;
-    }, 0)
+    "Ilosc parzystych elementow w tablicy = " +
+      arr.reduce((sum, next) => {
+        if (next % 2 == 0) {
+          return sum + 1;
+        }
+        return sum;
+      }, 0)
   );
-  console.log(arr.reduce((acc, curr) => acc * curr));
+  console.log("Iloczyn = " + arr.reduce((acc, curr) => acc * curr));
 };
 
 //Ad1
+
 console.log("Adaptacja pkt. 1");
-// console.log(
-//   connectArrays(constructPoint, [
-//     [1, 2, 3],
-//     [1, 2, 3],
-//   ])
-// );
+console.log(
+  connectArrays(constructPoint, [
+    [1, 2, 3],
+    [1, 2, 3],
+  ])
+);
+console.log("Adaptacja pkt. 1 gwiazdka");
 console.log(
   connectArrays(sumAll, [
     [1, 2, 3],
@@ -142,6 +135,7 @@ console.log(
 );
 
 //Ad2
+
 console.log("Adaptacja pkt. 2");
 
 // let range = rangefoo(3, 5);
@@ -156,10 +150,14 @@ range();
 //Ad3
 
 console.log("Adaptacja pkt. 3");
-console.log(dictionary("waltz, bad nymph, for quick jigs vex")); // panagram
+console.log(dictionary("waltz bad nymph for quick jigs vex")); // panagram
+
 //Ad4
+
 console.log("Adaptacja pkt. 4");
 scale([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+
 //Add5
+
 console.log("Adaptacja pkt. 5");
 productPlural(10);
