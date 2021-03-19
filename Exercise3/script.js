@@ -22,13 +22,67 @@ w niej liczb parzystych i ile wynosi iloczyn wszystkich jej elementów.
 */
 
 //Ad 1
+const sum = (a, b) => {
+  return a + b;
+};
+const reduce = (a, b) => {
+  return a - b;
+};
+const product = (a, b) => {
+  return a * b;
+};
+const constructPoint = (a, b) => {
+  return { x: a, y: b };
+};
 
-const connectArrays = (arrays, foo) => {};
+function sumAll() {
+  let sum = 0;
+  for (let i in arguments) {
+    sum += arguments[i];
+  }
+  return sum;
+}
+
+const connectArrays = (foo, arrays) => {
+  let outArr = [];
+  let howManyArr = arrays.length;
+  if (howManyArr == 2) {
+    for (let indexY = 0; indexY < arrays.length - 1; indexY++) {
+      for (let indexX = 0; indexX < arrays[0].length; indexX++) {
+        outArr.push(foo(arrays[indexY][indexX], arrays[indexY + 1][indexX]));
+      }
+    }
+  } else if (howManyArr == 3) {
+    for (let indexX = 0; indexX < arrays[0].length; indexX++) {
+      outArr.push(foo(arrays[0][indexX], arrays[1][indexX], arrays[2][indexX]));
+    }
+  } else {
+    for (let indexX = 0; indexX < arrays[0].length; indexX++) {
+      let tempArr = [];
+      for (let indexY = 0; indexY < arrays.length; indexY++) {
+        tempArr.push(arrays[indexY][indexX]);
+      }
+      outArr.push(foo(...tempArr));
+    }
+  }
+  return outArr;
+};
 
 //Ad2
 
 const rangefoo = (start, end) => {
-  let nonParameter = () => {};
+  let calledTimes = 0;
+  let nonParameter = () => {
+    if (start < end && end - start >= calledTimes) {
+      console.log(start + calledTimes);
+      calledTimes++;
+    } else if (start > end && start - end >= calledTimes) {
+      console.log(start - calledTimes);
+      calledTimes++;
+    } else {
+      console.log(NaN);
+    }
+  };
   return nonParameter;
 };
 
@@ -70,16 +124,42 @@ const productPlural = (length) => {
   console.log(arr.reduce((acc, curr) => acc * curr));
 };
 
+//Ad1
 console.log("Adaptacja pkt. 1");
+// console.log(
+//   connectArrays(constructPoint, [
+//     [1, 2, 3],
+//     [1, 2, 3],
+//   ])
+// );
+console.log(
+  connectArrays(sumAll, [
+    [1, 2, 3],
+    [1, 2, 3],
+    [1, 2, 3],
+    [1, 2, 3],
+  ])
+);
 
+//Ad2
 console.log("Adaptacja pkt. 2");
+
+// let range = rangefoo(3, 5);
+let range = rangefoo(7, 3);
+range();
+range();
+range();
+range();
+range();
+range();
+
 //Ad3
 
 console.log("Adaptacja pkt. 3");
 console.log(dictionary("waltz, bad nymph, for quick jigs vex")); // panagram
 //Ad4
 console.log("Adaptacja pkt. 4");
-console.log(scale([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]));
+scale([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
 //Add5
 console.log("Adaptacja pkt. 5");
 productPlural(10);
