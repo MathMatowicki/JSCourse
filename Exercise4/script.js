@@ -1,6 +1,4 @@
 /*Ćwiczenie 4 - obiekty
-
-
 W JS stwórz program definiujący Listę towarów wraz z prodkutami. 
 
 Produkty powinny być opisane minimum następującymi właściwościami: (id, nazwa, model, cena, zużycieEnergii (kWh)). 
@@ -27,15 +25,12 @@ ListaTowarów zaś powinna zwierać metody:
 
 - zmieńProdukt(idProduktu, produkt) - znajduje produkt o tym ID i podmienia wszystkie jego składowe wartościami z obiektu produkt
 
-
-
 Dodatkowo zdefiniuj dwa szczegółowe typy ListyTowarów mianowicie Magazyn oraz Sklep, które rozszerzają ListeTowarów.
 
-Magazyn będzie zawierał metodę dodajProdukt(produkt, ilość), która oprócz samego produktu będzie zawierała ilość sztuk, które zostają dane. Czyli Magazyn będzie dodatkowo będzie zawierał stan magazynowy danego produktu.
+Magazyn będzie zawierał metodę dodajProdukt(produkt, ilość), która oprócz samego produktu będzie zawierała ilość sztuk, które zostają dane. 
+Czyli Magazyn będzie dodatkowo będzie zawierał stan magazynowy danego produktu.
 
 W przypadku Magazynu będzie możliwość zabrania produktu tj. zwrócenia kopii obiektu Produkt oraz zmniejszenia odpowiednio stanu magazynowego.
-
- 
 
 Sklep zaś będzie zwykłą listą towarów, które można wyśweitlić lub dodawać za pomocą metod: 
 
@@ -43,9 +38,8 @@ Sklep zaś będzie zwykłą listą towarów, które można wyśweitlić lub doda
 
 - dodajProdukt(idProduktu, nazwa, model, cena, zużycieEnergii
 
-
-
-Na koniec dodaj zamówienie, które będzie umożliwiało dodanie produktów do zamówienia (po ID istniejącego produktu) oraz metodę zrealizujZamowienie, ktora to usuwa produkt odpowiedniej ilości sztuk z magazynu z którego pochodzi. */
+Na koniec dodaj zamówienie, które będzie umożliwiało dodanie produktów do zamówienia (po ID istniejącego produktu) oraz metodę zrealizujZamowienie,
+ktora to usuwa produkt odpowiedniej ilości sztuk z magazynu z którego pochodzi. */
 
 class Product {
     constructor(id, name, type, price, energyConsumption, yearProduction) {
@@ -56,45 +50,50 @@ class Product {
         this.energyConsumption = energyConsumption;
         this.yearProduction = yearProduction;
     }
-    get price() {
+
+    set setId(id) {
+        this.id = id;
+    }
+
+    set setName(name) {
+        this.name = name;
+    }
+    set setType(type) {
+        this.type = type;
+    }
+    set setPrice(price) {
+        this.price = price;
+    }
+    set setEnergyConsumption(energyConsumption) {
+        this.energyConsumption = energyConsumption;
+    }
+    set setYearProduction(yearProduction) {
+        this.yearProduction = yearProduction;
+    }
+
+    get getPrice() {
         return this.price;
     }
-    get costOfEnergy() {
+    get getCostOfEnergy() {
         const priceOfEnergy = 2.22;
         return this.energyConsumption * priceOfEnergy;
     }
 
-    get ageOfProduct() {
+    get getAgeOfProduct() {
         return new Date().getFullYear() - this.yearProduction;
     }
-    get ageOfProductYears() {
+    get getAgeOfProductInYears() {
         const gap = this.ageOfProduct();
         if (gap == 1) return gap + " year"
         return gap + " years";
     }
-
-    set id(id) {
-        this.id = id;
-    }
-
-    set name(name) {
-        this.name = name;
-    }
-    set type(type) {
-        this.type = type;
-    }
-    set price(price) {
-        this.price = price;
-    }
-    set energyConsumption(energyConsumption) {
-        this.energyConsumption = energyConsumption;
-    }
-    set yearProduction(yearProduction) {
-        this.yearProduction = yearProduction;
-    }
 }
 class ListOfGoods {
     products = [];
+
+    constructor(products) {
+        this.products = products;
+    }
 
     showProduct(id) {
         return this.products.filter(Product => Product.id = id);
@@ -105,11 +104,11 @@ class ListOfGoods {
     }
 
     hasId(product) {
-        return this.products.some(pro => pro.id == product.id) ? true : false;
+        return this.products.some(pro => pro.id == product.id);
     }
 
     addProduct(product) {
-        if (!hasId) {
+        if (!this.hasId(product)) {
             this.products.push(product);
         }
     }
@@ -118,20 +117,60 @@ class ListOfGoods {
         if (this.hasId(product)) {
             const indexOfProduct = this.products.findIndex((el) => el == id);
             if (indexOfProduct >= 0) {
-                this.products[indexOfProduct].id = product.id;
-                this.products[indexOfProduct].name = product.name;
-                this.products[indexOfProduct].type = product.type;
-                this.products[indexOfProduct].price = product.price;
-                this.products[indexOfProduct].energyConsumption = product.energyConsumption;
-                this.products[indexOfProduct].yearProduction = product.yearProduction;
+                this.products[indexOfProduct].setId = product.id;
+                this.products[indexOfProduct].setName = product.name;
+                this.products[indexOfProduct].setType = product.type;
+                this.products[indexOfProduct].setPrice = product.price;
+                this.products[indexOfProduct].setEnergyConsumption = product.energyConsumption;
+                this.products[indexOfProduct].setYearProduction = product.yearProduction;
             }
         }
     }
 }
 
 class Shop extends ListOfGoods {
+    constructor(prodcuts) {
+        super(prodcuts);
+    }
+
+    addProduct(name, type, price, energyConsumption) {
+
+    }
+
+    addProduct(id, name, type, price, energyConsumption) {
+
+    }
+
 
 }
 class Warehouse extends ListOfGoods {
+    count = 0
+    constructor(prodcuts) {
+        super(prodcuts);
+    }
+
+    addProduct(product, count) {
+        
+    }
+
+    moveProductFromMagazine(product) {
+        
+
+       return this.showProduct(product.id)
+    }
 
 }
+
+let p1 = new Product(1, "Redmi 9", "telephone", 500.99, 7.3, 2020);
+let p2 = new Product(2, "Redmi 10", "telephone", 800.99, 7.8, 2020);
+let p3 = new Product(3, "Redmi X", "telephone", 1500.99, 8.1, 2021);
+let p4 = new Product(1, "Redmi 8", "telephone", 300.99, 7, 2018);
+
+let products = new ListOfGoods([p1]);
+
+products.addProduct(p1);
+products.addProduct(p2);
+products.addProduct(p3);
+products.addProduct(p4);
+let warehouse = 
+console.log(products.showAllProducts());
