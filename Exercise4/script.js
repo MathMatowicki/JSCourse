@@ -36,9 +36,10 @@ Sklep zaś będzie zwykłą listą towarów, które można wyśweitlić lub doda
 
 - dodajProdukt(nazwa, model, cena, zużycieEnergii) - id produktu powinno być generowane automatycznie
 
-- dodajProdukt(idProduktu, nazwa, model, cena, zużycieEnergii
+- dodajProdukt(idProduktu, nazwa, model, cena, zużycieEnergii)
 
-Na koniec dodaj zamówienie, które będzie umożliwiało dodanie produktów do zamówienia (po ID istniejącego produktu) oraz metodę zrealizujZamowienie,
+Na koniec dodaj zamówienie, które będzie umożliwiało dodanie produktów do 
+zamówienia (po ID istniejącego produktu) oraz metodę zrealizujZamowienie,
 ktora to usuwa produkt odpowiedniej ilości sztuk z magazynu z którego pochodzi. */
 
 class Product {
@@ -49,12 +50,12 @@ class Product {
         this.price = price;
         this.energyConsumption = energyConsumption;
         this.yearProduction = yearProduction;
+        this.count = 1;
     }
 
     set setId(id) {
         this.id = id;
     }
-
     set setName(name) {
         this.name = name;
     }
@@ -70,7 +71,13 @@ class Product {
     set setYearProduction(yearProduction) {
         this.yearProduction = yearProduction;
     }
+    set setCount(count) {
+        this.count = count;
+    }
 
+    get getId() {
+        return this.id;
+    }
     get getPrice() {
         return this.price;
     }
@@ -78,7 +85,6 @@ class Product {
         const priceOfEnergy = 2.22;
         return this.energyConsumption * priceOfEnergy;
     }
-
     get getAgeOfProduct() {
         return new Date().getFullYear() - this.yearProduction;
     }
@@ -86,6 +92,9 @@ class Product {
         const gap = this.ageOfProduct();
         if (gap == 1) return gap + " year"
         return gap + " years";
+    }
+    get getCount() {
+        return this.count;
     }
 }
 class ListOfGoods {
@@ -110,6 +119,8 @@ class ListOfGoods {
     addProduct(product) {
         if (!this.hasId(product)) {
             this.products.push(product);
+        } else {
+            console.error("Product with same id exist on list");
         }
     }
 
@@ -132,31 +143,56 @@ class Shop extends ListOfGoods {
     constructor(prodcuts) {
         super(prodcuts);
     }
-
-    addProduct(name, type, price, energyConsumption) {
-
+    hasName(name) {
+        return this.products.some(pro => pro.name == name);
     }
 
-    addProduct(id, name, type, price, energyConsumption) {
-
+    addProduct(name, type, price, energyConsumption, yearProduction) {
+        if (this.hasName(name)) {
+            console.error("Product with that name is already in the shop");
+        } else {
+            let newId = Math.max(...this.products.map((product) => product.id)) + 1;
+            this.products.push(new Product(newId, name, type, price, energyConsumption, yearProduction));
+        }
     }
 
-
+    addProduct(id, name, type, price, energyConsumption, yearProduction) {
+        if (this.hasId) {
+            console.error("Product with same id exist in shop");
+        } else {
+            this.products.push(new Product(id, name, type, price, energyConsumption, yearProduction));
+        }
+    }
 }
+
+
+
 class Warehouse extends ListOfGoods {
-    count = 0
-    constructor(prodcuts) {
-        super(prodcuts);
+    count = 1;
+    constructor(products) {
+        super(products);
     }
 
     addProduct(product, count) {
-        
+        if (!this.hasId(product)) {
+            product.setCount = count;
+            this.prodcuts.push(product)
+        } else {
+            const indexOfProduct = this.products.findIndex((el) => el == product.id);
+            this.products[indexOfProduct].setCount += count;
+        }
     }
 
     moveProductFromMagazine(product) {
-        
 
-       return this.showProduct(product.id)
+        if (this.hasId(product)) {
+            const indexOfProduct = this.products.findIndex((el) => el == product.id);
+            this.products[indexOfProduct].setCount = this.products[indexOfProduct].getCount - product.getCount;
+        } else {
+            console.error("There is no such product in Magazine");
+            return null;
+        }
+        return this.showProduct(product.id)
     }
 
 }
@@ -172,5 +208,11 @@ products.addProduct(p1);
 products.addProduct(p2);
 products.addProduct(p3);
 products.addProduct(p4);
-let warehouse = 
+
+let warehouse = new Warehouse([p1]);
+let shop = new Shop([p1]);
 console.log(products.showAllProducts());
+console.log(warehouse.showAllProducts());
+console.log(shop.showAllProducts());
+
+shop.addProduct("Honor 5", "telephone", 200, 6.5, 2016);
