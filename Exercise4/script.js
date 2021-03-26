@@ -156,7 +156,7 @@ class Shop extends ListOfGoods {
         }
     }
 
-    addProduct(id, name, type, price, energyConsumption, yearProduction) {
+    addProductWithId(id, name, type, price, energyConsumption, yearProduction) {
         if (this.hasId) {
             console.error("Product with same id exist in shop");
         } else {
@@ -197,6 +197,34 @@ class Warehouse extends ListOfGoods {
 
 }
 
+class Order {
+    warehouses = [];
+    list = [];
+    constructor(warehouses) {
+        this.warehouses = warehouses;
+
+    }
+    addToOrder(warehouse, product) {
+
+        for (let i = 0; i < this.warehouses.length; i++) {
+            let index = this.warehouses[i].indexOf(product);
+            if (index >= 0) {
+                this.list.push(this.warehouses[i][index].showProduct(this.warehouses[i][index].getId()));
+
+            }
+        }
+    }
+    realizeOrder() {
+        let product = this.list.pop();
+        for (let i = 0; i < this.warehouses.length; i++) {
+            let index = this.warehouses[i].indexOf(product);
+            if (product == this.warehouses[i][index]) {
+                this.warehouses[i][index].setCount = this.warehouses[i][index].getCount - 1;
+            }
+        }
+    }
+}
+
 let p1 = new Product(1, "Redmi 9", "telephone", 500.99, 7.3, 2020);
 let p2 = new Product(2, "Redmi 10", "telephone", 800.99, 7.8, 2020);
 let p3 = new Product(3, "Redmi X", "telephone", 1500.99, 8.1, 2021);
@@ -209,10 +237,36 @@ products.addProduct(p2);
 products.addProduct(p3);
 products.addProduct(p4);
 
-let warehouse = new Warehouse([p1]);
+let w1 = new Warehouse([p1]);
+let w2 = new Warehouse([p1]);
+let w3 = new Warehouse([p1]);
 let shop = new Shop([p1]);
 console.log(products.showAllProducts());
 console.log(warehouse.showAllProducts());
 console.log(shop.showAllProducts());
 
-shop.addProduct("Honor 5", "telephone", 200, 6.5, 2016);
+shop.addProductWithId(4, "Honor 5", "telephone", 200, 6.5, 2016);
+shop.addProduct("Honor 7x", "telephone", 200, 6.5, 2016);
+
+w1.addProduct(p2);
+w1.addProduct(p1);
+w1.addProduct(p3);
+w1.addProduct(p4);
+
+w2.addProduct(p2);
+w2.addProduct(p1);
+w2.addProduct(p3);
+w2.addProduct(p4);
+
+w3.addProduct(p2);
+w3.addProduct(p1);
+w3.addProduct(p3);
+w3.addProduct(p4);
+
+let order = new Order([w1, w2, w3]);
+order.addToOrder(w1, p1);
+order.addToOrder(w2, p2);
+order.addToOrder(w3, p3);
+
+order.realizeOrder();
+
