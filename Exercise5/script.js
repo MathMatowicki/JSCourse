@@ -14,30 +14,115 @@ otoczony zostaje ramką niebieską, a ten przed nim - pomarańczową. Jeśli kli
 5. Kliknięcie w nagłówek ukrywa treść poniższego paragrafu. Ponowne kliknięcie - odłania ją.
 Dodaj pole tekstowe pozwalające na dodanie kolejnego paragrafu. Zadbaj, aby wszelkie zachowania z powyższych punktów nadal działały.
 */
+window.onload = function () {
 
-//Ad1
-const colorParagraphs = () => {
-    let colors = ["red", "orange", "green", "blue", "pink"];
+    const paragraphs = document.getElementsByTagName("p");
+    //Ad1
+    const colorParagraphs = () => {
+        let colors = ["red", "orange", "green", "blue", "pink"];
 
-    let paragraphs = document.getElementsByTagName("p");
 
-    for (let index = 0; index < paragraphs.length; index++) {
-        paragraphs[index].style.color = colors[Math.floor(Math.random() * (colors.length))];
+        for (let index = 0; index < paragraphs.length; index++) {
+            paragraphs[index].style.color = colors[Math.floor(Math.random() * (colors.length))];
+        }
     }
-}
-//Ad2
-const addTitleAttrToParagraphs = () => {
-    let paragraphs = document.getElementsByTagName("p");
-    for (let index = 0; index < paragraphs.length; index++) {
-        let paragraphLength = paragraphs[index].textContent.length;
-        paragraphs[index].setAttribute("title", paragraphLength);
+    //Ad2
+    const addTitleAttrToParagraphs = () => {
+        for (let index = 0; index < paragraphs.length; index++) {
+            let paragraphLength = paragraphs[index].textContent.length;
+            paragraphs[index].setAttribute("title", paragraphLength);
+        }
     }
-}
 
-//Ad3
-const addBorders = () => {
+    //Ad3
+    for (let index = 0; index < paragraphs.length; index++) {
+        paragraphs[index].addEventListener("click", function () {
+            for (let index = 0; index < paragraphs.length; index++) {
+                paragraphs[index].style.border = "none";
+                paragraphs[index].style.background = "none";
+            }
+            paragraphs[index].style.border = "medium solid green";
+            paragraphs[index].style.background = "lightgray";
+            if (index % 2 == 0) {
+                paragraphs[index].style.background = "darkgray";
+            }
+            if (index > 0) {
+                paragraphs[index - 1].style.border = "medium solid orange";
 
-}
+            }
+            if (index < paragraphs.length - 1) {
+                paragraphs[index + 1].style.border = "medium solid blue";
+            }
+        })
+    }
 
-colorParagraphs();
-addTitleAttrToParagraphs();
+
+    //Ad4
+    const addHeaders = () => {
+
+        for (let index = 0; index < paragraphs.length; index++) {
+            let header = document.createElement('h2');
+            const validIndex = index + 1;
+            header.innerHTML = "Paragraph " + validIndex;
+            paragraphs[index].before(header);
+            header.append(paragraphs[index]);
+        }
+    }
+    //Ad1
+    colorParagraphs();
+    //Ad2
+    addTitleAttrToParagraphs();
+    //Ad4
+    addHeaders();
+
+    //Ad5
+    let show = (elem) => {
+        elem.style.display = 'block';
+    }
+
+    const hide = (elem) => {
+        elem.style.display = 'none';
+    }
+
+
+    const headers = document.getElementsByTagName("h2");
+    for (let index = 0; index < headers.length; index++) {
+        headers[index].addEventListener("click", function (e) {
+            if (e.target !== this) return;
+            if (headers[index].childNodes[1].style.display == "none") {
+                show(headers[index].childNodes[1]);
+            } else {
+                hide(headers[index].childNodes[1])
+            }
+        })
+    }
+    //Ad6
+    let lastHeader = headers[headers.length - 1]
+
+
+
+
+    const makeInputForm = (lastChild, headersLength) => {
+        let form = document.createElement('div');
+        let input = document.createElement('input');
+        let button = document.createElement('button');
+        input.value = "Try this!";
+        input.type = "txt";
+        button.innerText = 'Add paragraph';
+        form.append(input);
+        form.append(button);
+        lastChild.after(form);
+
+        button.addEventListener("click", function () {
+            let para = document.createElement('p');
+            let header = document.createElement('h2');
+            header.innerHTML = "Paragraph " + headersLength;
+            para.innerText = document.getElementsByTagName("input")[0].value;
+            header.append(para);
+            lastChild.after(header);
+        })
+    }
+
+
+    makeInputForm(lastHeader, headers.length);
+};
